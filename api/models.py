@@ -1,22 +1,18 @@
-from ninja import Schema
+from ninja import ModelSchema
+
+from orgs.models import Tag, OSC
 
 
-class TagSchema(Schema):
-    tagId: int
-    nombre: str
-    descripcion: str
+class TagSchema(ModelSchema):
+    class Config:
+        model = Tag
+        model_fields = "__all__"
 
 
-class OSCSchema(Schema):
-    oscId: int
-    nombre: str
-    alias: str
+class OSCSchema(ModelSchema):
     tags: list[TagSchema]
-    direccion: str
-    coordenadas_latitud: float
-    coordenadas_longitud: float
-    email: str
-    telefono: str
-    areaContacto: str
-    horaAtencion: str
-    paginaWeb: str
+
+    class Config:
+        model = OSC
+        model_exclude = ['tags', 'videos', 'imagenes', 'articulosInteres', 'redesSociales']
+        depth = 1
