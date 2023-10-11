@@ -1,4 +1,4 @@
-from ninja import ModelSchema
+from ninja import ModelSchema, Schema
 
 from orgs.models import Tag, OSC
 
@@ -16,3 +16,7 @@ class OSCSchema(ModelSchema):
         model = OSC
         model_exclude = ['tags', 'videos', 'imagenes', 'articulosInteres', 'redesSociales']
         depth = 1
+
+class LoginSchema(Schema):
+    username: str
+    password: str

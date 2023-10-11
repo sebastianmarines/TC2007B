@@ -1,11 +1,12 @@
 import django.http
+from django.contrib.auth.models import User
 from ninja import NinjaAPI
-from orgs.models import OSC
-from .models import OSCSchema
-from ninja import NinjaAPI
+from jose import jwt
+
+SECRET = 'secret'
 
 from orgs.models import OSC
-from .models import OSCSchema
+from .models import OSCSchema, LoginSchema
 
 router = NinjaAPI()
 
@@ -24,3 +25,13 @@ def get_org(request, id: int):
         raise django.http.Http404
 
     return org
+
+
+@router.post('login/')
+def login(request, payload: LoginSchema):
+    user = User.objects.get(username=payload.username)
+    if user is not None and user.check_password(payload.password):
+        token = jwt.encode({'username': user.username}, SECRET, algorithm='HS256')
+        return {'token': token}
+
+    return django.http.HttpResponse(status=401)
