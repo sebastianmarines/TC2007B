@@ -21,13 +21,17 @@ class OSC(models.Model):
     horaAtencion = models.CharField(max_length=255)
     paginaWeb = models.URLField()
     redesSociales = models.JSONField()
-    videos = models.ManyToManyField('Multimedia', related_name='osc_videos', blank=True)
-    imagenes = models.ManyToManyField('Multimedia', related_name='osc_imagenes', blank=True)
-    articulosInteres = models.ManyToManyField('Multimedia', related_name='osc_articulos', blank=True)
+    videos = models.ManyToManyField("Multimedia", related_name="osc_videos", blank=True)
+    imagenes = models.ManyToManyField(
+        "Multimedia", related_name="osc_imagenes", blank=True
+    )
+    articulosInteres = models.ManyToManyField(
+        "Multimedia", related_name="osc_articulos", blank=True
+    )
 
     class Meta:
-        verbose_name = 'OSC'
-        verbose_name_plural = 'OSCs'
+        verbose_name = "OSC"
+        verbose_name_plural = "OSCs"
 
 
 class Multimedia(models.Model):

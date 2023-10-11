@@ -14,9 +14,31 @@ class OSCSchema(ModelSchema):
 
     class Config:
         model = OSC
-        model_exclude = ['tags', 'videos', 'imagenes', 'articulosInteres', 'redesSociales']
+        model_exclude = [
+            "tags",
+            "videos",
+            "imagenes",
+            "articulosInteres",
+            "redesSociales",
+        ]
         depth = 1
+
+
+class JWTSchema(Schema):
+    token: str
+
 
 class LoginSchema(Schema):
     username: str
     password: str
+
+
+class RegisterSchema(LoginSchema):
+    email: str
+    phone: str
+    first_name: str
+    last_name: str
+
+
+class ErrorSchema(Schema):
+    message: str
