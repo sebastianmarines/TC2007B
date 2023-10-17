@@ -6,7 +6,14 @@ from django.db import IntegrityError
 
 from orgs.models import OSC
 from users.models import Perfil
-from .models import OSCSchema, LoginSchema, RegisterSchema, JWTSchema, ErrorSchema
+from .models import (
+    OSCSchema,
+    LoginSchema,
+    RegisterSchema,
+    JWTSchema,
+    AuthBearer,
+    UserSchema,
+)
 from .utils import generate_jwt
 
 router = NinjaAPI()
@@ -56,3 +63,8 @@ def register(request, payload: RegisterSchema):
         perfil.save()
 
     return generate_jwt(user)
+
+
+@router.get("users/me/", response=UserSchema, auth=AuthBearer())
+def get_user(request):
+    return request.auth
