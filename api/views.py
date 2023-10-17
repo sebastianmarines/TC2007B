@@ -4,7 +4,7 @@ from ninja import NinjaAPI
 from django.db import IntegrityError
 
 
-from orgs.models import OSC
+from orgs.models import OSC, Tag
 from users.models import Perfil
 from .models import (
     OSCSchema,
@@ -13,6 +13,7 @@ from .models import (
     JWTSchema,
     AuthBearer,
     UserSchema,
+    MapInfoSchema,
 )
 from .utils import generate_jwt
 
@@ -68,3 +69,10 @@ def register(request, payload: RegisterSchema):
 @router.get("users/me/", response=UserSchema, auth=AuthBearer())
 def get_user(request):
     return request.auth
+
+
+@router.get("getMapInfo/", response=MapInfoSchema)
+def get_map_info(request):
+    oscs = list(OSC.objects.all())
+    tags = list(Tag.objects.all())
+    return MapInfoSchema(oscs=oscs, tags=tags)

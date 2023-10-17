@@ -71,3 +71,8 @@ class UserSchema(ModelSchema):
 
 class ErrorSchema(Schema):
     message: str
+
+
+class MapInfoSchema(Schema):
+    oscs: list[OSCSchema]
+    tags: list[TagSchema]
