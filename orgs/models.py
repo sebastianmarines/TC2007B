@@ -6,6 +6,9 @@ class Tag(models.Model):
     nombre = models.CharField(max_length=255)
     descripcion = models.TextField()
 
+    def __str__(self):
+        return self.nombre
+
 
 class OSC(models.Model):
     oscId = models.AutoField(primary_key=True)
@@ -28,6 +31,9 @@ class OSC(models.Model):
     articulosInteres = models.ManyToManyField(
         "Multimedia", related_name="osc_articulos", blank=True
     )
+
+    def __str__(self):
+        return self.nombre
 
     class Meta:
         verbose_name = "OSC"
