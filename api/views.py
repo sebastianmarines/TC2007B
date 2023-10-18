@@ -1,8 +1,7 @@
 import django.http
 from django.contrib.auth.models import User
-from ninja import NinjaAPI
 from django.db import IntegrityError
-
+from ninja import NinjaAPI
 
 from orgs.models import OSC, Tag
 from users.models import Perfil
@@ -14,6 +13,7 @@ from .models import (
     AuthBearer,
     UserSchema,
     MapInfoSchema,
+    OSCEditSchema,
 )
 from .utils import generate_jwt
 
@@ -32,6 +32,20 @@ def get_org(request, id: int):
         org = OSC.objects.get(oscId=id)
     except OSC.DoesNotExist:
         raise django.http.Http404
+
+    return org
+
+
+@router.post("orgs/{id}/edit", response=OSCSchema)
+def edit_org(request, id: int, payload: OSCEditSchema):
+    try:
+        org = OSC.objects.get(oscId=id)
+    except OSC.DoesNotExist:
+        raise django.http.Http404
+
+    org.coordenadas_latitud = payload.coordenadas_latitud
+    org.coordenadas_longitud = payload.coordenadas_longitud
+    org.save()
 
     return org
 

@@ -39,6 +39,11 @@ class OSCSchema(ModelSchema):
         ]
         depth = 1
 
+class OSCEditSchema(ModelSchema):
+    class Config:
+        model = OSC
+        model_fields = ["coordenadas_latitud", "coordenadas_longitud"]
+
 
 class JWTSchema(Schema):
     token: str
