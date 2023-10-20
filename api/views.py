@@ -90,3 +90,24 @@ def get_map_info(request):
     oscs = list(OSC.objects.all())
     tags = list(Tag.objects.all())
     return MapInfoSchema(oscs=oscs, tags=tags)
+
+
+@router.get("users/me/favorites/", response=list[OSCSchema], auth=AuthBearer())
+def get_favorites(request):
+    user = request.auth
+    perfil = Perfil.objects.get(usuario=user)
+    return list(perfil.favoritos.all())
+
+
+@router.post("users/me/favorites/{id}/", response=OSCSchema, auth=AuthBearer())
+def add_favorite(request, id: int):
+    user = request.auth
+    perfil = Perfil.objects.get(usuario=user)
+    osc = OSC.objects.get(oscId=id)
+    # perfil.favoritos.add(osc)
+    # Togle favorite
+    if osc in perfil.favoritos.all():
+        perfil.favoritos.remove(osc)
+    else:
+        perfil.favoritos.add(osc)
+    return osc
