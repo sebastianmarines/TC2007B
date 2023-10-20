@@ -14,6 +14,7 @@ from .models import (
     UserSchema,
     MapInfoSchema,
     OSCEditSchema,
+    TagSchema,
 )
 from .utils import generate_jwt
 
@@ -104,10 +105,14 @@ def add_favorite(request, id: int):
     user = request.auth
     perfil = Perfil.objects.get(usuario=user)
     osc = OSC.objects.get(oscId=id)
-    # perfil.favoritos.add(osc)
     # Togle favorite
     if osc in perfil.favoritos.all():
         perfil.favoritos.remove(osc)
     else:
         perfil.favoritos.add(osc)
     return osc
+
+
+@router.get("tags/", response=list[TagSchema])
+def get_tags(request):
+    return list(Tag.objects.all())
